@@ -13,7 +13,8 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font:14px/1.
 #view{position:fixed;inset:0;width:100%;height:100%;display:block;outline:none}
 .screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(14,16,19,.94);z-index:20}
 .screen.dim{background:rgba(14,16,19,.62)}
-.box{max-height:calc(100vh - 32px);overflow:auto;background:var(--panel);border:1px solid var(--line);padding:20px;width:min(420px,calc(100vw - 32px));display:flex;flex-direction:column;gap:10px}
+.box{max-height:calc(100vh - 32px);overflow:auto;background:var(--panel);border:1px solid var(--line);padding:20px;width:min(440px,calc(100vw - 32px));display:flex;flex-direction:column;gap:10px}
+.box.wide{width:min(540px,calc(100vw - 32px))}
 .brand{display:flex;align-items:center;gap:12px}
 .mark{width:34px;height:34px;flex:none;display:block}
 h1{font-size:22px;margin:0;letter-spacing:.02em;font-weight:600}
@@ -26,7 +27,10 @@ button:hover{background:var(--hover)}
 button:focus-visible,input:focus-visible{outline:2px solid var(--fg);outline-offset:1px}
 button.primary{background:var(--fg);color:var(--bg);border-color:var(--fg);font-weight:600}
 button.primary:hover{background:#fff}
+button.danger{border-color:var(--bad);color:var(--bad)}
+button.danger:hover{background:rgba(255,123,114,.14)}
 button.sm{height:30px;padding:0 10px;font-size:13px}
+button.xs{height:24px;padding:0 8px;font-size:12px}
 button:disabled{opacity:.4;cursor:default}
 input[type=text]{height:40px;width:100%;padding:0 12px;background:var(--bg);border:1px solid var(--line2);user-select:text;-webkit-user-select:text}
 input.code{font-family:var(--mono);letter-spacing:.25em;text-transform:uppercase;text-align:center}
@@ -62,6 +66,10 @@ input[type=range]{width:100%;accent-color:var(--fg);margin:6px 0}
 .seg6 button{border-color:var(--line2);padding:0 2px;font-size:11px}
 .seg6 button+button{border-left:0}
 .seg6 button.on{background:var(--fg);color:var(--bg);font-weight:600}
+.seg7{display:grid;grid-template-columns:repeat(7,1fr)}
+.seg7 button{border-color:var(--line2);padding:0 2px;font-size:10px}
+.seg7 button+button{border-left:0}
+.seg7 button.on{background:var(--fg);color:var(--bg);font-weight:600}
 /* HUD */
 #hud{position:fixed;inset:0;pointer-events:none;z-index:10}
 #cross{position:absolute;left:50%;top:50%;width:18px;height:18px;transform:translate(-50%,-50%)}
@@ -75,14 +83,14 @@ input[type=range]{width:100%;accent-color:var(--fg);margin:6px 0}
 #hcoord{left:16px;bottom:16px}
 #hperf{left:16px;bottom:54px}
 #hlan{left:16px;top:16px}
-#hplayers{right:16px;top:16px;min-width:130px;display:flex;flex-direction:column;gap:3px}
+#hplayers{right:16px;top:16px;min-width:130px;max-height:280px;overflow:hidden;display:flex;flex-direction:column;gap:3px}
 #hplayers div{display:flex;gap:8px;align-items:center}
-#hplayers i{width:10px;height:10px;display:block}
+#hplayers i{width:10px;height:10px;display:block;flex:none}
 #hhelp{right:16px;bottom:16px;color:var(--dim)}
 #toast{position:fixed;z-index:30;left:50%;top:16px;transform:translateX(-50%);opacity:0;transition:opacity .2s}
 #toast.show{opacity:1}
 /* Palette */
-#palette{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:15;width:min(340px,calc(100vw - 32px));max-height:calc(100vh - 32px);overflow:auto;background:var(--panel);border:1px solid var(--line);padding:16px;display:flex;flex-direction:column;gap:10px}
+#palette{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:15;width:min(360px,calc(100vw - 32px));max-height:calc(100vh - 32px);overflow:auto;background:var(--panel);border:1px solid var(--line);padding:16px;display:flex;flex-direction:column;gap:10px}
 .pick{display:grid;grid-template-columns:48px 1fr;gap:10px}
 input[type=color]{width:48px;height:40px;padding:0;border:1px solid var(--line2);background:var(--bg);cursor:pointer}
 #used{display:grid;grid-template-columns:repeat(auto-fill,minmax(26px,1fr));gap:4px;overflow:auto;max-height:200px;padding:2px}
@@ -97,13 +105,20 @@ input[type=color]{width:48px;height:40px;padding:0;border:1px solid var(--line2)
 .cl.old{display:none}
 #chat.open .cl.old{display:block}
 #chatin{pointer-events:auto}
-#publicList{max-height:120px;overflow-y:auto;border:1px solid var(--line2);background:var(--bg);display:flex;flex-direction:column}
-.pub-item{padding:8px 12px;display:flex;justify-content:space-between;cursor:pointer;border-bottom:1px solid var(--line)}
-.pub-item:hover{background:var(--hover)}
-#drawGrid{display:grid;grid-template-columns:repeat(16,1fr);width:160px;height:160px;border:1px solid var(--line2);margin:0 auto;background:#fff}
-.pix{border:1px solid rgba(0,0,0,0.05);cursor:pointer}
-.c6-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+#publicList,.list-box{max-height:140px;overflow-y:auto;border:1px solid var(--line2);background:var(--bg);display:flex;flex-direction:column}
+.pub-item,.list-item{padding:7px 10px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);gap:8px}
+.pub-item{cursor:pointer}
+.pub-item:hover,.list-item:hover{background:var(--hover)}
+.pix-grid{display:grid;grid-template-columns:repeat(16,1fr);width:176px;height:176px;border:1px solid var(--line2);margin:0 auto;touch-action:none;background-image:linear-gradient(45deg,#252930 25%,transparent 25%),linear-gradient(-45deg,#252930 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#252930 75%),linear-gradient(-45deg,transparent 75%,#252930 75%);background-size:16px 16px;background-position:0 0,0 8px,8px -8px,-8px 0;background-color:#191c22}
+.pix{border:1px solid rgba(255,255,255,0.04);cursor:crosshair}
+.c6-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 .c6-grid input[type=color]{width:100%;height:32px}
+.preview-wrap{display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--bg);border:1px solid var(--line2);padding:8px}
+#avatarPrevCanvas{width:200px;height:220px;display:block;cursor:grab;touch-action:none}
+#avatarPrevCanvas:active{cursor:grabbing}
+.tool-bar{display:flex;gap:6px;align-items:center;justify-content:center;flex-wrap:wrap}
+.swatch-btn{width:24px;height:24px;padding:0;border:1px solid var(--line2);flex:none}
+.swatch-btn.on{outline:2px solid var(--fg);outline-offset:1px}
 @media(max-width:520px){#hhelp{display:none}}
 </style>
 </head>
@@ -118,19 +133,20 @@ input[type=color]{width:48px;height:40px;padding:0;border:1px solid var(--line2)
  <div class="chip" id="hperf" hidden>FPS: 60</div>
  <div class="chip" id="hlan" hidden></div>
  <div class="chip" id="hplayers" hidden></div>
- <div class="chip" id="hhelp">E colors/shapes · R-click door · T chat · Esc menu</div>
-  <div id="chat"><div id="chatlog"></div><input type="text" id="chatin" maxlength="200" placeholder="Message, Enter to send" autocomplete="off" hidden></div>
+ <div class="chip" id="hhelp">E colors/shapes · R-click door/trap · T chat · Esc menu</div>
+ <div id="chat"><div id="chatlog"></div><input type="text" id="chatin" maxlength="200" placeholder="Message, Enter to send" autocomplete="off" hidden></div>
 </div>
 
 <div id="palette" hidden>
  <h2>Shape</h2>
- <div class="seg6" id="shapes">
+ <div class="seg7" id="shapes">
   <button class="on" data-s="0">Block</button>
   <button data-s="1">Slab</button>
   <button data-s="2">Stairs</button>
   <button data-s="3">Door</button>
   <button data-s="4">Light</button>
   <button data-s="5">Pane</button>
+  <button data-s="6">Trap</button>
  </div>
  <h2>Color</h2>
  <div class="pick"><input type="color" id="cpick" value="#6dab3f"><input type="text" id="chex" value="#6dab3f" maxlength="7" spellcheck="false"></div>
@@ -180,7 +196,7 @@ input[type=color]{width:48px;height:40px;padding:0;border:1px solid var(--line2)
   <div><label>Public worlds <button class="sm" id="bRefreshPub" style="float:right;height:24px;padding:0 6px">Refresh</button></label>
    <div id="publicList"><div style="padding:10px;text-align:center;color:var(--dim)">No public worlds found</div></div>
   </div>
-  <div><label for="codeJ">Join code</label><input type="text" id="codeJ" class="code" maxlength="7" placeholder="·······" autocomplete="off" spellcheck="false"></div>
+  <div><label for="codeJ">Join code</label><input type="text" id="codeJ" class="code" maxlength="10" placeholder="·······" autocomplete="off" spellcheck="false"></div>
   <button class="primary" id="bDoJoin">Join</button>
   <div class="msg" id="joinMsg"></div>
   <button id="bJoinBack">Back</button>
@@ -188,53 +204,108 @@ input[type=color]{width:48px;height:40px;padding:0;border:1px solid var(--line2)
 </div>
 
 <div id="settings" class="screen" hidden>
- <div class="box">
-  <h2>Settings</h2>
-  <div class="slider"><div class="top"><span>Render distance</span><b id="rdV"></b></div><input type="range" id="rd" min="3" max="20" step="1"></div>
-  <div class="slider"><div class="top"><span>Field of view</span><b id="fovV"></b></div><input type="range" id="fov" min="60" max="110" step="1"></div>
-  <div class="slider"><div class="top"><span>Mouse sensitivity</span><b id="senV"></b></div><input type="range" id="sen" min="1" max="10" step="0.5"></div>
-  <div><label>Smooth lighting</label>
-   <div class="seg" id="smoothSel"><button class="on" data-sm="1">On</button><button data-sm="0">Off</button></div></div>
-  <div><label>Performance monitor</label>
-   <div class="seg" id="perfSel"><button data-pf="1">On</button><button class="on" data-pf="0">Off</button></div></div>
-  <div class="hr">Player look</div>
-  <div><label>Avatar rig</label>
-   <div class="seg" id="rigSel"><button class="on" data-rig="c2">C2 (Classic)</button><button data-rig="c6">C6 (Limbs)</button></div></div>
+ <div class="box wide">
   <div class="row">
-   <div style="flex:1"><label for="headCol">Head</label><input type="color" id="headCol" value="#c9ccd1" style="width:100%;height:34px"></div>
-   <div style="flex:1"><label for="bodyCol" id="bodyColLbl">Body</label><input type="color" id="bodyCol" value="#5b8bd9" style="width:100%;height:34px"></div>
-   <div style="flex:1"><label for="accCol">Accessory</label><input type="color" id="accCol" value="#e0a96d" style="width:100%;height:34px"></div>
-   <div><label>&nbsp;</label><button class="sm" id="bResetLook" title="Reset colors">Reset</button></div>
-  </div>
-  <div id="c6ColorsWrap" hidden>
-   <div class="c6-grid">
-    <div><label for="lArmCol">Left Arm</label><input type="color" id="lArmCol" value="#c9ccd1"></div>
-    <div><label for="rArmCol">Right Arm</label><input type="color" id="rArmCol" value="#c9ccd1"></div>
-    <div><label for="lLegCol">Left Leg</label><input type="color" id="lLegCol" value="#3d5a80"></div>
-    <div><label for="rLegCol">Right Leg</label><input type="color" id="rLegCol" value="#3d5a80"></div>
+   <h2>Settings</h2>
+   <span class="sp"></span>
+   <div class="seg" id="settingsTabs" style="width:200px">
+    <button class="on" data-tab="general">General</button>
+    <button data-tab="avatar">Avatar</button>
    </div>
   </div>
-  <div><label>Head accessory</label>
-   <div class="seg5" id="hatSel">
-    <button class="on" data-h="none">None</button>
-    <button data-h="ears">Ears</button>
-    <button data-h="cap">Cap</button>
-    <button data-h="tophat">Top hat</button>
-    <button data-h="antlers">Antlers</button>
+
+  <!-- General Tab -->
+  <div id="tabGeneral" style="display:flex;flex-direction:column;gap:10px">
+   <div class="slider"><div class="top"><span>Render distance</span><b id="rdV"></b></div><input type="range" id="rd" min="3" max="20" step="1"></div>
+   <div class="slider"><div class="top"><span>Field of view</span><b id="fovV"></b></div><input type="range" id="fov" min="60" max="110" step="1"></div>
+   <div class="slider"><div class="top"><span>Mouse sensitivity</span><b id="senV"></b></div><input type="range" id="sen" min="1" max="10" step="0.5"></div>
+   <div><label>Smooth lighting</label>
+    <div class="seg" id="smoothSel"><button class="on" data-sm="1">On</button><button data-sm="0">Off</button></div></div>
+   <div><label>Clouds (Y = 512)</label>
+    <div class="seg" id="cloudsSel"><button class="on" data-cl="1">On</button><button data-cl="0">Off</button></div></div>
+   <div><label>Performance monitor</label>
+    <div class="seg" id="perfSel"><button data-pf="1">On</button><button class="on" data-pf="0">Off</button></div></div>
+  </div>
+
+  <!-- Avatar Tab -->
+  <div id="tabAvatar" hidden style="display:flex;flex-direction:column;gap:10px">
+   <div class="preview-wrap">
+    <canvas id="avatarPrevCanvas" width="200" height="220"></canvas>
+    <span style="font-size:11px;color:var(--dim)">Drag character to rotate 360°</span>
    </div>
+
+   <div><label>Avatar rig</label>
+    <div class="seg" id="rigSel"><button class="on" data-rig="c2">C2 (Classic)</button><button data-rig="c6">C6 (Limbs)</button></div></div>
+   <div class="row">
+    <div style="flex:1"><label for="headCol">Head</label><input type="color" id="headCol" value="#c9ccd1" style="width:100%;height:34px"></div>
+    <div style="flex:1"><label for="bodyCol" id="bodyColLbl">Body</label><input type="color" id="bodyCol" value="#5b8bd9" style="width:100%;height:34px"></div>
+    <div style="flex:1"><label for="accCol">Accessory</label><input type="color" id="accCol" value="#e0a96d" style="width:100%;height:34px"></div>
+    <div><label>&nbsp;</label><button class="sm" id="bResetLook" title="Reset colors">Reset</button></div>
+   </div>
+   <div id="c6ColorsWrap" hidden>
+    <div class="c6-grid">
+     <div><label for="lArmCol">Left Arm</label><input type="color" id="lArmCol" value="#c9ccd1"></div>
+     <div><label for="rArmCol">Right Arm</label><input type="color" id="rArmCol" value="#c9ccd1"></div>
+     <div><label for="lLegCol">Left Leg</label><input type="color" id="lLegCol" value="#3d5a80"></div>
+     <div><label for="rLegCol">Right Leg</label><input type="color" id="rLegCol" value="#3d5a80"></div>
+    </div>
+   </div>
+
+   <div><label>Head accessory</label>
+    <div class="seg6" id="hatSel">
+     <button class="on" data-h="none">None</button>
+     <button data-h="ears">Ears</button>
+     <button data-h="cap">Cap</button>
+     <button data-h="tophat">Top hat</button>
+     <button data-h="antlers">Antlers</button>
+     <button data-h="hardhat">Hardhat</button>
+    </div>
+   </div>
+
+   <div><label>Back accessory</label>
+    <div class="seg4" id="backSel">
+     <button class="on" data-b="none">None</button>
+     <button data-b="backpack">Backpack</button>
+     <button data-b="tail">Tail</button>
+     <button data-b="wings">Wings</button>
+    </div>
+   </div>
+
+   <div class="hr">Face</div>
+   <div><label>Face mode</label>
+    <div class="seg" id="faceModeSel"><button class="on" data-m="text">Text face</button><button data-m="draw">16x16 Draw</button></div>
+   </div>
+   <div id="faceTextWrap">
+    <label for="faceT">Face text</label>
+    <div class="row"><input type="text" id="faceT" maxlength="12" placeholder="Blank" autocomplete="off" spellcheck="false"><canvas id="facePrev" width="128" height="128" style="width:44px;height:44px;border:1px solid var(--line2);flex:none"></canvas></div>
+   </div>
+   <div id="faceDrawWrap" hidden>
+    <div class="tool-bar" style="margin-bottom:6px">
+     <button class="xs on" id="facePenBlack" data-fpen="1">Black</button>
+     <button class="xs" id="facePenWhite" data-fpen="2">White</button>
+     <button class="xs" id="facePenErase" data-fpen="0">Erase</button>
+     <button class="xs" id="clearPix">Clear</button>
+    </div>
+    <div id="drawGrid" class="pix-grid"></div>
+   </div>
+   <div><label>Face rotation (clockwise)</label>
+    <div class="seg4" id="faceRot"><button data-r="0">0°</button><button data-r="1">90°</button><button data-r="2">180°</button><button data-r="3">270°</button></div></div>
+
+   <div class="hr">Custom T-Shirt (16x16 Color)</div>
+   <div class="tool-bar">
+    <input type="color" id="shirtColPick" value="#ffffff" style="width:32px;height:26px">
+    <button class="swatch-btn on" data-sc="#ffffff" style="background:#ffffff" title="White"></button>
+    <button class="swatch-btn" data-sc="#14161a" style="background:#14161a" title="Black"></button>
+    <button class="swatch-btn" data-sc="#ff5e5b" style="background:#ff5e5b" title="Red"></button>
+    <button class="swatch-btn" data-sc="#ffca3a" style="background:#ffca3a" title="Yellow"></button>
+    <button class="swatch-btn" data-sc="#5cd65c" style="background:#5cd65c" title="Green"></button>
+    <button class="swatch-btn" data-sc="#4da6ff" style="background:#4da6ff" title="Blue"></button>
+    <button class="xs" id="shirtEraseBtn">Erase</button>
+    <button class="xs" id="shirtClearBtn">Clear</button>
+   </div>
+   <div id="shirtGrid" class="pix-grid"></div>
   </div>
-  <div><label>Face mode</label>
-   <div class="seg" id="faceModeSel"><button class="on" data-m="text">Text face</button><button data-m="draw">16x16 Draw</button></div>
-  </div>
-  <div id="faceTextWrap">
-   <label for="faceT">Face text</label>
-   <div class="row"><input type="text" id="faceT" maxlength="12" placeholder="Blank" autocomplete="off" spellcheck="false"><canvas id="facePrev" width="128" height="128" style="width:56px;height:56px;border:1px solid var(--line2);flex:none"></canvas></div></div>
-  <div id="faceDrawWrap" hidden>
-   <label>16x16 Face Pixel Canvas (<span id="clearPix" style="color:var(--fg);cursor:pointer;text-decoration:underline">Clear</span>)</label>
-   <div id="drawGrid"></div>
-  </div>
-  <div><label>Face rotation (clockwise)</label>
-   <div class="seg4" id="faceRot"><button data-r="0">0°</button><button data-r="1">90°</button><button data-r="2">180°</button><button data-r="3">270°</button></div></div>
+
   <button id="bSetBack">Back</button>
  </div>
 </div>
@@ -244,10 +315,23 @@ input[type=color]{width:48px;height:40px;padding:0;border:1px solid var(--line2)
   <h2 id="wname">World</h2>
   <button class="primary" id="bResume">Resume</button>
   <div id="lanBlock"></div>
+  <div id="hostPlayersWrap" hidden>
+   <label>Connected players (<span id="connCount">0</span>/49)</label>
+   <div id="hostPlayersList" class="list-box"></div>
+  </div>
+  <button id="bTeleportMenu" hidden>Teleport to player</button>
   <button id="bLan">Open to LAN</button>
   <button id="bDownload">Download world</button>
   <button id="bPauseSet">Settings</button>
   <button id="bLeave">Leave world</button>
+ </div>
+</div>
+
+<div id="tpModal" class="screen dim" hidden>
+ <div class="box">
+  <h2>Teleport to player</h2>
+  <div id="tpList" class="list-box" style="max-height:240px"></div>
+  <button id="bTpBack">Back</button>
  </div>
 </div>
 
@@ -283,17 +367,17 @@ input[type=color]{width:48px;height:40px;padding:0;border:1px solid var(--line2)
 const WX = 512, WY = 512, WZ = 512, CS = 16;
 const CXN = WX / CS, CYN = WY / CS, CZN = WZ / CS;
 const MAGIC = [0x43, 0x48, 0x52, 0x4d]; // "CHRM"
-const SAVE_VER = 3;
+const SAVE_VER = 4;
 
 /* Flag packing (16-bit per voxel):
-   bits 0..2:  shape (0 = cube, 1 = slab, 2 = stairs, 3 = door, 4 = light, 5 = pane)
+   bits 0..2:  shape (0 = cube, 1 = slab, 2 = stairs, 3 = door, 4 = light, 5 = pane, 6 = trapdoor)
    bits 3..4:  dir (0 = -Z/North, 1 = +X/East, 2 = +Z/South, 3 = -X/West)
    bit  5:     half/top (0 = bottom half / lower door, 1 = top half / upper door)
-   bit  6:     open (1 = door swung open)
+   bit  6:     open (1 = door/trapdoor swung open)
    bits 8..11: alpha nibble (0 = 15/15 opaque for v1 compat; 1..15 = alpha 1/15..15/15)
 */
-const SHAPE_CUBE = 0, SHAPE_SLAB = 1, SHAPE_STAIRS = 2, SHAPE_DOOR = 3, SHAPE_LIGHT = 4, SHAPE_PANE = 5;
-const SHAPE_NAMES = ['Block', 'Slab', 'Stairs', 'Door', 'Light', 'Pane'];
+const SHAPE_CUBE = 0, SHAPE_SLAB = 1, SHAPE_STAIRS = 2, SHAPE_DOOR = 3, SHAPE_LIGHT = 4, SHAPE_PANE = 5, SHAPE_TRAPDOOR = 6;
+const SHAPE_NAMES = ['Block', 'Slab', 'Stairs', 'Door', 'Light', 'Pane', 'Trapdoor'];
 
 function packFlags(shape = 0, dir = 0, top = 0, open = 0, alphaNibble = 15) {
   const a = alphaNibble >= 15 ? 0 : Math.max(1, Math.min(14, alphaNibble | 0));
@@ -510,15 +594,18 @@ const LOOK_DEFAULT = {
   lLeg: '#3d5a80',
   rLeg: '#3d5a80',
   acc: '#e0a96d',
-  hat: 'none'
+  hat: 'none',
+  back: 'none',
+  shirt: new Array(256).fill('')
 };
-const settings = { rd: 8, fov: 75, sen: 4, smooth: true, perf: false };
+const settings = { rd: 8, fov: 75, sen: 4, smooth: true, clouds: true, perf: false };
 try { Object.assign(settings, JSON.parse(localStorage.getItem('chroma.settings') || '{}')); } catch (e) {}
 if (typeof settings.smooth !== 'boolean') settings.smooth = true;
+if (typeof settings.clouds !== 'boolean') settings.clouds = true;
 if (typeof settings.perf !== 'boolean') settings.perf = false;
 function saveSettings() { try { localStorage.setItem('chroma.settings', JSON.stringify(settings)); } catch (e) {} }
 
-let myLook = { ...LOOK_DEFAULT };
+let myLook = { ...LOOK_DEFAULT, shirt: new Array(256).fill('') };
 function cleanLook(l) {
   const hexOk = s => /^#[0-9a-fA-F]{6}$/.test(String(s || '').trim());
   const rig = (l && l.rig === 'c6') ? 'c6' : 'c2';
@@ -529,8 +616,13 @@ function cleanLook(l) {
   const lLeg = hexOk(l && l.lLeg) ? String(l.lLeg).toLowerCase() : LOOK_DEFAULT.lLeg;
   const rLeg = hexOk(l && l.rLeg) ? String(l.rLeg).toLowerCase() : LOOK_DEFAULT.rLeg;
   const acc = hexOk(l && l.acc) ? String(l.acc).toLowerCase() : LOOK_DEFAULT.acc;
-  const hat = ['none', 'ears', 'cap', 'tophat', 'antlers'].includes(l && l.hat) ? l.hat : 'none';
-  return { rig, head, body, lArm, rArm, lLeg, rLeg, acc, hat };
+  const hat = ['none', 'ears', 'cap', 'tophat', 'antlers', 'hardhat'].includes(l && l.hat) ? l.hat : 'none';
+  const back = ['none', 'backpack', 'tail', 'wings'].includes(l && l.back) ? l.back : 'none';
+  let shirt = new Array(256).fill('');
+  if (l && Array.isArray(l.shirt) && l.shirt.length === 256) {
+    shirt = l.shirt.map(c => hexOk(c) ? String(c).toLowerCase() : '');
+  }
+  return { rig, head, body, lArm, rArm, lLeg, rLeg, acc, hat, back, shirt };
 }
 try { const l = JSON.parse(localStorage.getItem('chroma.look') || 'null'); if (l) myLook = cleanLook(l); } catch (e) {}
 
@@ -543,22 +635,100 @@ const SKY = 0x9fcdf2;
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(SKY);
 scene.fog = new THREE.Fog(SKY, 40, 100);
-const camera = new THREE.PerspectiveCamera(settings.fov, 1, 0.05, 800);
+const camera = new THREE.PerspectiveCamera(settings.fov, 1, 0.05, 900);
 camera.rotation.order = 'YXZ';
 const chunkMat = new THREE.MeshBasicMaterial({ vertexColors: true });
 const transMat = new THREE.MeshBasicMaterial({ vertexColors: true, transparent: true, depthWrite: false, side: THREE.DoubleSide });
 
+/* ===== Clouds at Y = 512 ===== */
+let cloudGroup = null;
+function initClouds() {
+  if (cloudGroup) return;
+  cloudGroup = new THREE.Group();
+  cloudGroup.position.y = 512;
+
+  // Deterministic pseudo-random blocky cloud patches across 512x512
+  let seed = 133742;
+  const rand = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
+
+  const boxes = [];
+  for (let i = 0; i < 65; i++) {
+    const cx = rand() * 512;
+    const cz = rand() * 512;
+    const puffs = 3 + Math.floor(rand() * 5);
+    for (let p = 0; p < puffs; p++) {
+      const w = 14 + Math.floor(rand() * 24);
+      const d = 14 + Math.floor(rand() * 24);
+      const h = 3 + Math.floor(rand() * 3);
+      const px = cx + (rand() - 0.5) * 28;
+      const pz = cz + (rand() - 0.5) * 28;
+      boxes.push([px, 0, pz, w, h, d]);
+    }
+  }
+
+  // Merge all cloud boxes into a single lightweight BufferGeometry with subtle bottom shading
+  const pos = [], col = [], idx = [];
+  let vc = 0;
+  for (const [bx, by, bz, w, h, d] of boxes) {
+    const x0 = bx - w * 0.5, x1 = bx + w * 0.5;
+    const y0 = by, y1 = by + h;
+    const z0 = bz - d * 0.5, z1 = bz + d * 0.5;
+    const mins = [x0, y0, z0], maxs = [x1, y1, z1];
+    for (let f = 0; f < 6; f++) {
+      const a = f >> 1, s = (f & 1) ? -1 : 1;
+      const u = (a + 1) % 3, wAxis = (a + 2) % 3;
+      const shade = a === 1 ? (s > 0 ? 1.0 : 0.86) : (a === 0 ? 0.94 : 0.90);
+      const cr = Math.round(255 * shade), cg = Math.round(255 * shade), cb = Math.round(255 * shade);
+      for (let k = 0; k < 4; k++) {
+        const p = [mins[0], mins[1], mins[2]];
+        p[a] = s > 0 ? maxs[a] : mins[a];
+        p[u] = (k === 1 || k === 2) ? maxs[u] : mins[u];
+        p[wAxis] = (k >= 2) ? maxs[wAxis] : mins[wAxis];
+        pos.push(p[0], p[1], p[2]);
+        col.push(cr, cg, cb);
+      }
+      if (s > 0) idx.push(vc, vc + 1, vc + 2, vc, vc + 2, vc + 3);
+      else idx.push(vc, vc + 2, vc + 1, vc, vc + 3, vc + 2);
+      vc += 4;
+    }
+  }
+
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pos), 3));
+  geo.setAttribute('color', new THREE.BufferAttribute(new Uint8Array(col), 3, true));
+  geo.setIndex(new THREE.BufferAttribute(vc > 65535 ? new Uint32Array(idx) : new Uint16Array(idx), 1));
+  const mat = new THREE.MeshBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.88, fog: false });
+
+  // Create tiled copies so drifting wraps seamlessly across the 512x512 world
+  for (const ox of [-512, 0, 512]) {
+    const m = new THREE.Mesh(geo, mat);
+    m.position.x = ox;
+    cloudGroup.add(m);
+  }
+  cloudGroup.visible = settings.clouds;
+  scene.add(cloudGroup);
+}
+initClouds();
+
+function updateClouds(dt) {
+  if (!cloudGroup) return;
+  cloudGroup.visible = settings.clouds;
+  if (!settings.clouds) return;
+  cloudGroup.position.x += dt * 1.4;
+  if (cloudGroup.position.x >= 512) cloudGroup.position.x -= 512;
+}
+
 function applyView() {
   const R = settings.rd * 16;
   scene.fog.near = R * 0.55; scene.fog.far = R * 0.97;
-  camera.far = R + 48; camera.fov = settings.fov;
+  camera.far = Math.max(R + 48, 650); camera.fov = settings.fov;
   camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
   renderer.setSize(innerWidth, innerHeight, false);
   scanNeeded = true;
 }
 addEventListener('resize', applyView);
 
-/* ===== Shape Geometry, Panes, Shadows, Light Blocks & Smooth Lighting ===== */
+/* ===== Shape Geometry, Panes, Trapdoors, Shadows, Light Blocks & Smooth Lighting ===== */
 const FSHADE = (a, s) => a === 1 ? (s > 0 ? 1 : 0.55) : a === 0 ? 0.8 : 0.68;
 
 function canPaneConnectTo(nx, ny, nz) {
@@ -591,8 +761,18 @@ function getBlockBoxes(f, wx = 0, wy = 0, wz = 0) {
     if (effDir === 2) return [[0, 0, 1 - t, 1, 1, 1]];
     return [[0, 0, 0, t, 1, 1]];
   }
+  if (shape === SHAPE_TRAPDOOR) {
+    const t = 0.1875;
+    if (!open) {
+      return [top ? [0, 1 - t, 0, 1, 1, 1] : [0, 0, 0, 1, t, 1]];
+    }
+    // When opened, trapdoor swings up/down vertically against the hinged wall (`dir`)
+    if (dir === 0) return [[0, 0, 0, 1, 1, t]];
+    if (dir === 1) return [[1 - t, 0, 0, 1, 1, 1]];
+    if (dir === 2) return [[0, 0, 1 - t, 1, 1, 1]];
+    return [[0, 0, 0, t, 1, 1]];
+  }
   if (shape === SHAPE_PANE) {
-    // 0.25 thick pane connecting to adjacent panes and solid walls
     const min = 0.375, max = 0.625;
     const n = canPaneConnectTo(wx, wy, wz - 1);
     const s = canPaneConnectTo(wx, wy, wz + 1);
@@ -602,7 +782,6 @@ function getBlockBoxes(f, wx = 0, wy = 0, wz = 0) {
     if (!n && !s && !w && !e) {
       boxes.push([min, 0, min, max, 1, max]);
     } else {
-      // Combine collinear segments cleanly so transparent panes don't show internal seams
       if ((n || s) && !(w || e)) {
         boxes.push([min, 0, n ? 0 : min, max, 1, s ? 1 : max]);
       } else if ((w || e) && !(n || s)) {
@@ -630,7 +809,7 @@ function blocksSunlight(id, f) {
   if (!id) return false;
   const shape = f & 7;
   if (shape === SHAPE_LIGHT) return true;
-  if (shape === SHAPE_PANE) return false;
+  if (shape === SHAPE_PANE || shape === SHAPE_TRAPDOOR) return false;
   const alphaRaw = (f >> 8) & 15;
   if (alphaRaw !== 0 && alphaRaw < 12) return false;
   return shape === SHAPE_CUBE || shape === SHAPE_SLAB || shape === SHAPE_STAIRS;
@@ -640,7 +819,7 @@ function isOccluderForAO(x, y, z) {
   if (!id) return false;
   const f = getF(x, y, z);
   const shape = f & 7;
-  if (shape === SHAPE_DOOR || shape === SHAPE_PANE) return false;
+  if (shape === SHAPE_DOOR || shape === SHAPE_PANE || shape === SHAPE_TRAPDOOR) return false;
   if (shape === SHAPE_LIGHT) return true;
   const alphaRaw = (f >> 8) & 15;
   return alphaRaw === 0 || alphaRaw >= 13;
@@ -899,22 +1078,21 @@ function meshChunk(c) {
       const alphaByte = isTrans ? Math.round(info.alpha * 255) : null;
       const localL = lightGrid[((ly + 1) * 18 + (lz + 1)) * 18 + (lx + 1)];
 
-      // Cull touching faces between stacked or adjacent panes/walls
       let baseSkip = 0;
       if (info.shape === SHAPE_PANE) {
         const upId = getB(wx, wy + 1, wz), upF = upId ? getF(wx, wy + 1, wz) : 0;
         const dnId = getB(wx, wy - 1, wz), dnF = dnId ? getF(wx, wy - 1, wz) : 0;
-        if (isOpaqueFullCube(upId, upF) || (upId === v && upF === f)) baseSkip |= (1 << 2); // +Y face
-        if (isOpaqueFullCube(dnId, dnF) || (dnId === v && dnF === f)) baseSkip |= (1 << 3); // -Y face
+        if (isOpaqueFullCube(upId, upF) || (upId === v && upF === f)) baseSkip |= (1 << 2);
+        if (isOpaqueFullCube(dnId, dnF) || (dnId === v && dnF === f)) baseSkip |= (1 << 3);
       }
 
       for (const box of boxes) {
         let skip = baseSkip;
         if (info.shape === SHAPE_PANE) {
-          if (box[3] === 1 && canPaneConnectTo(wx + 1, wy, wz)) skip |= (1 << 0); // +X
-          if (box[0] === 0 && canPaneConnectTo(wx - 1, wy, wz)) skip |= (1 << 1); // -X
-          if (box[5] === 1 && canPaneConnectTo(wx, wy, wz + 1)) skip |= (1 << 4); // +Z
-          if (box[2] === 0 && canPaneConnectTo(wx, wy, wz - 1)) skip |= (1 << 5); // -Z
+          if (box[3] === 1 && canPaneConnectTo(wx + 1, wy, wz)) skip |= (1 << 0);
+          if (box[0] === 0 && canPaneConnectTo(wx - 1, wy, wz)) skip |= (1 << 1);
+          if (box[5] === 1 && canPaneConnectTo(wx, wy, wz + 1)) skip |= (1 << 4);
+          if (box[2] === 0 && canPaneConnectTo(wx, wy, wz - 1)) skip |= (1 << 5);
         }
         emitBoxFaces(targetBuf, lx, ly, lz, box, r, g, b, alphaByte, localL, emissive, skip);
       }
@@ -992,7 +1170,6 @@ function boxHit(px, py, pz) {
     if (!id) continue;
     const f = getF(x, y, z);
     const shape = f & 7;
-    // Full block hitboxes for cubes, lights, and panes
     if (shape === SHAPE_CUBE || shape === SHAPE_LIGHT || shape === SHAPE_PANE) return true;
     const boxes = getBlockBoxes(f, x, y, z);
     for (const b of boxes) {
@@ -1056,7 +1233,7 @@ function stepPlayer(dt) {
   if (me.y < -40) respawn();
 }
 
-/* ===== Targeting, break, place, door toggle ===== */
+/* ===== Targeting, break, place, door & trapdoor toggle ===== */
 function rayAABB(ox, oy, oz, dx, dy, dz, x0, y0, z0, x1, y1, z1) {
   let tmin = -Infinity, tmax = Infinity, nx = 0, ny = 0, nz = 0;
   const axes = [[ox, dx, x0, x1, 0], [oy, dy, y0, y1, 1], [oz, dz, z0, z1, 2]];
@@ -1089,7 +1266,6 @@ function raycast(ox, oy, oz, dx, dy, dz, max) {
     if (id > 0) {
       const f = getF(x, y, z);
       const shape = f & 7;
-      // Full block hitbox raycast for cubes, lights, and panes
       if (shape === SHAPE_CUBE || shape === SHAPE_LIGHT || shape === SHAPE_PANE) {
         return { x, y, z, nx, ny, nz, hx: ox + dx * t, hy: oy + dy * t, hz: oz + dz * t };
       }
@@ -1145,26 +1321,29 @@ function updateTarget() {
   } else hl.visible = false;
 }
 
-function toggleDoorAt(x, y, z) {
+function toggleHingedAt(x, y, z) {
   const id = getB(x, y, z);
   if (!id) return false;
   const f = getF(x, y, z);
-  if ((f & 7) !== SHAPE_DOOR) return false;
+  const shape = f & 7;
+  if (shape !== SHAPE_DOOR && shape !== SHAPE_TRAPDOOR) return false;
   const info = unpackFlags(f);
   const newOpen = info.open ? 0 : 1;
   const rgb = world.pal[id];
-  const newF = packFlags(SHAPE_DOOR, info.dir, info.top, newOpen, info.alphaNibble);
+  const newF = packFlags(shape, info.dir, info.top, newOpen, info.alphaNibble);
   if (setB(x, y, z, id, newF)) netSetBlock(x, y, z, rgb, newF);
 
-  const py = info.top ? y - 1 : y + 1;
-  if (inB(x, py, z) && getB(x, py, z) > 0) {
-    const pf = getF(x, py, z);
-    const pinfo = unpackFlags(pf);
-    if (pinfo.shape === SHAPE_DOOR && pinfo.dir === info.dir && pinfo.top !== info.top) {
-      const pid = getB(x, py, z);
-      const prgb = world.pal[pid];
-      const newPf = packFlags(SHAPE_DOOR, pinfo.dir, pinfo.top, newOpen, pinfo.alphaNibble);
-      if (setB(x, py, z, pid, newPf)) netSetBlock(x, py, z, prgb, newPf);
+  if (shape === SHAPE_DOOR) {
+    const py = info.top ? y - 1 : y + 1;
+    if (inB(x, py, z) && getB(x, py, z) > 0) {
+      const pf = getF(x, py, z);
+      const pinfo = unpackFlags(pf);
+      if (pinfo.shape === SHAPE_DOOR && pinfo.dir === info.dir && pinfo.top !== info.top) {
+        const pid = getB(x, py, z);
+        const prgb = world.pal[pid];
+        const newPf = packFlags(SHAPE_DOOR, pinfo.dir, pinfo.top, newOpen, pinfo.alphaNibble);
+        if (setB(x, py, z, pid, newPf)) netSetBlock(x, py, z, prgb, newPf);
+      }
     }
   }
   return true;
@@ -1192,8 +1371,9 @@ function breakBlock() {
 function placeBlock() {
   if (!target) return;
   const shift = keys.ShiftLeft || keys.ShiftRight;
-  if (!shift && (getF(target.x, target.y, target.z) & 7) === SHAPE_DOOR) {
-    toggleDoorAt(target.x, target.y, target.z);
+  const hitShape = getF(target.x, target.y, target.z) & 7;
+  if (!shift && (hitShape === SHAPE_DOOR || hitShape === SHAPE_TRAPDOOR)) {
+    toggleHingedAt(target.x, target.y, target.z);
     return;
   }
 
@@ -1271,7 +1451,7 @@ function setAlpha(nibble) {
   updateHudChip();
 }
 function setShape(s) {
-  curShape = Math.max(0, Math.min(5, s | 0));
+  curShape = Math.max(0, Math.min(6, s | 0));
   document.querySelectorAll('#shapes button').forEach(b => b.classList.toggle('on', +b.dataset.s === curShape));
   updateHudChip();
 }
@@ -1292,7 +1472,7 @@ $('chex').addEventListener('input', e => { if (/^#?[0-9a-fA-F]{6}$/.test(e.targe
 $('alpha').addEventListener('input', e => setAlpha(+e.target.value));
 document.querySelectorAll('#shapes button').forEach(b => b.onclick = () => setShape(+b.dataset.s));
 
-/* ===== Face & Draw & Look ===== */
+/* ===== Face, Shirt & Avatar Rig ===== */
 const FACE_DEFAULT = { mode: 'text', text: ':)', rot: 1, pixels: new Array(256).fill(0) };
 const CTRL = /[\u0000-\u001f\u007f]/g;
 function cleanFace(f) {
@@ -1300,10 +1480,12 @@ function cleanFace(f) {
   const text = Array.from(String((f && f.text) || '').replace(CTRL, '')).slice(0, 6).join('');
   const rot = (((parseInt(f && f.rot, 10) || 0) % 4) + 4) % 4;
   let pixels = new Array(256).fill(0);
-  if (f && Array.isArray(f.pixels) && f.pixels.length === 256) pixels = f.pixels.map(x => x ? 1 : 0);
+  if (f && Array.isArray(f.pixels) && f.pixels.length === 256) {
+    pixels = f.pixels.map(x => (x === 2 ? 2 : (x ? 1 : 0)));
+  }
   return { mode, text, rot, pixels };
 }
-let myFace = { ...FACE_DEFAULT };
+let myFace = { ...FACE_DEFAULT, pixels: new Array(256).fill(0) };
 try { const f = JSON.parse(localStorage.getItem('chroma.face') || 'null'); if (f) myFace = cleanFace(f); } catch (e) {}
 
 function drawFaceCanvas(cv, face, bg) {
@@ -1312,9 +1494,10 @@ function drawFaceCanvas(cv, face, bg) {
   if (face.mode === 'draw') {
     const sz = S / 16;
     g.save(); g.translate(S / 2, S / 2); g.rotate(face.rot * Math.PI / 2); g.translate(-S / 2, -S / 2);
-    g.fillStyle = '#14161a';
     for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) {
-      if (face.pixels[y * 16 + x]) g.fillRect(x * sz, y * sz, sz + 0.5, sz + 0.5);
+      const p = face.pixels[y * 16 + x];
+      if (p === 1) { g.fillStyle = '#14161a'; g.fillRect(x * sz, y * sz, sz + 0.5, sz + 0.5); }
+      else if (p === 2) { g.fillStyle = '#ffffff'; g.fillRect(x * sz, y * sz, sz + 0.5, sz + 0.5); }
     }
     g.restore();
   } else {
@@ -1326,6 +1509,23 @@ function drawFaceCanvas(cv, face, bg) {
     const w = g.measureText(face.text).width;
     if (w > S * 0.8) { fs *= S * 0.8 / w; g.font = '700 ' + fs + 'px ' + fam; }
     g.fillText(face.text, 0, fs * 0.04); g.restore();
+  }
+}
+
+function drawShirtCanvas(cv, shirtPixels, bodyBg) {
+  const g = cv.getContext('2d'), S = cv.width;
+  g.fillStyle = bodyBg;
+  g.fillRect(0, 0, S, S);
+  if (!Array.isArray(shirtPixels)) return;
+  const sz = S / 16;
+  for (let y = 0; y < 16; y++) {
+    for (let x = 0; x < 16; x++) {
+      const c = shirtPixels[y * 16 + x];
+      if (c) {
+        g.fillStyle = c;
+        g.fillRect(x * sz, y * sz, sz + 0.5, sz + 0.5);
+      }
+    }
   }
 }
 
@@ -1375,15 +1575,82 @@ function buildHatMesh(hatType, headHex, bodyHex, accHex) {
       prong2.rotation.z = side * 0.2;
       grp.add(base, prong1, prong2);
     }
+  } else if (hatType === 'hardhat') {
+    const shellMat = new THREE.MeshBasicMaterial({ color: accHex });
+    const trimMat = new THREE.MeshBasicMaterial({ color: new THREE.Color(accHex).multiplyScalar(0.8) });
+    const brim = new THREE.Mesh(new THREE.BoxGeometry(0.58, 0.04, 0.66), trimMat);
+    brim.position.set(0, 0.50, -0.04);
+    const domeLower = new THREE.Mesh(new THREE.BoxGeometry(0.54, 0.14, 0.54), shellMat);
+    domeLower.position.set(0, 0.57, 0);
+    const domeUpper = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.09, 0.44), shellMat);
+    domeUpper.position.set(0, 0.67, 0);
+    const ridge = new THREE.Mesh(new THREE.BoxGeometry(0.10, 0.05, 0.52), trimMat);
+    ridge.position.set(0, 0.72, 0);
+    grp.add(brim, domeLower, domeUpper, ridge);
   }
   return grp;
 }
 
-function buildAvatarRig(lk, tex) {
+function buildBackMesh(backType, rigType, accHex) {
+  const grp = new THREE.Group();
+  if (!backType || backType === 'none') return grp;
+
+  const mainMat = new THREE.MeshBasicMaterial({ color: accHex });
+  const shadeMat = new THREE.MeshBasicMaterial({ color: new THREE.Color(accHex).multiplyScalar(0.82) });
+  // Front face of player is -Z, so back of torso is +Z
+  const backZ = rigType === 'c6' ? 0.13 : 0.20;
+  const centerY = rigType === 'c6' ? 0.98 : 0.72;
+  const hipY = rigType === 'c6' ? 0.68 : 0.35;
+
+  if (backType === 'backpack') {
+    const pack = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.50, 0.20), mainMat);
+    pack.position.set(0, centerY, backZ + 0.10);
+    const pocket = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.22, 0.06), shadeMat);
+    pocket.position.set(0, centerY - 0.10, backZ + 0.22);
+    const flap = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.08, 0.22), shadeMat);
+    flap.position.set(0, centerY + 0.22, backZ + 0.10);
+    grp.add(pack, pocket, flap);
+  } else if (backType === 'tail') {
+    const seg1 = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.14, 0.24), mainMat);
+    seg1.position.set(0, hipY, backZ + 0.10);
+    seg1.rotation.x = -0.35;
+    const seg2 = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.12, 0.26), shadeMat);
+    seg2.position.set(0, hipY + 0.09, backZ + 0.30);
+    seg2.rotation.x = -0.7;
+    const tip = new THREE.Mesh(new THREE.BoxGeometry(0.15, 0.15, 0.16), mainMat);
+    tip.position.set(0, hipY + 0.22, backZ + 0.44);
+    grp.add(seg1, seg2, tip);
+  } else if (backType === 'wings') {
+    for (const side of [-1, 1]) {
+      const wingPivot = new THREE.Group();
+      wingPivot.position.set(side * 0.10, centerY + 0.10, backZ + 0.02);
+      wingPivot.rotation.y = side * 0.42;
+
+      const inner = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.44, 0.05), mainMat);
+      inner.position.set(side * 0.18, 0, 0);
+      const outer = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.34, 0.05), shadeMat);
+      outer.position.set(side * 0.46, 0.06, 0.03);
+      outer.rotation.y = side * 0.22;
+      const tip = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.20, 0.04), mainMat);
+      tip.position.set(side * 0.68, 0.12, 0.06);
+      tip.rotation.y = side * 0.35;
+
+      wingPivot.add(inner, outer, tip);
+      grp.add(wingPivot);
+    }
+  }
+  return grp;
+}
+
+function buildAvatarRig(lk, faceTex, shirtTex) {
   const rigGroup = new THREE.Group();
-  const bodyMat = new THREE.MeshBasicMaterial({ color: lk.body });
+  const bodyPlainMat = new THREE.MeshBasicMaterial({ color: lk.body });
+  const bodyFrontMat = shirtTex ? new THREE.MeshBasicMaterial({ map: shirtTex }) : bodyPlainMat;
+  // BoxGeometry material indices: 0:+X, 1:-X, 2:+Y, 3:-Y, 4:+Z (back), 5:-Z (front)
+  const torsoMats = [bodyPlainMat, bodyPlainMat, bodyPlainMat, bodyPlainMat, bodyPlainMat, bodyFrontMat];
+
   const flatMat = new THREE.MeshBasicMaterial({ color: lk.head });
-  const faceMat = new THREE.MeshBasicMaterial({ map: tex });
+  const faceMat = new THREE.MeshBasicMaterial({ map: faceTex });
   const head = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.5, 0.5), [flatMat, flatMat, flatMat, flatMat, flatMat, faceMat]);
   head.position.y = 0.25;
 
@@ -1392,11 +1659,12 @@ function buildAvatarRig(lk, tex) {
   const hatGroup = buildHatMesh(lk.hat, lk.head, lk.body, lk.acc);
   pivot.add(hatGroup);
 
+  const backGroup = buildBackMesh(lk.back, lk.rig, lk.acc);
+
   let lArmPivot = null, rArmPivot = null, lLegPivot = null, rLegPivot = null;
 
   if (lk.rig === 'c6') {
-    // 6-part Minecraft-style articulated character rig (1.8m total height)
-    const torso = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.65, 0.26), bodyMat);
+    const torso = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.65, 0.26), torsoMats);
     torso.position.y = 0.975;
     pivot.position.y = 1.3;
 
@@ -1429,16 +1697,81 @@ function buildAvatarRig(lk, tex) {
     rLegMesh.position.y = -0.325;
     rLegPivot.add(rLegMesh);
 
-    rigGroup.add(torso, pivot, lArmPivot, rArmPivot, lLegPivot, rLegPivot);
+    rigGroup.add(torso, pivot, backGroup, lArmPivot, rArmPivot, lLegPivot, rLegPivot);
   } else {
-    // Classic 2-part C2 rig
-    const body = new THREE.Mesh(new THREE.BoxGeometry(0.6, 1.2, 0.4), bodyMat);
+    const body = new THREE.Mesh(new THREE.BoxGeometry(0.6, 1.2, 0.4), torsoMats);
     body.position.y = 0.6;
     pivot.position.y = 1.2;
-    rigGroup.add(body, pivot);
+    rigGroup.add(body, pivot, backGroup);
   }
 
-  return { rigGroup, pivot, hatGroup, lArmPivot, rArmPivot, lLegPivot, rLegPivot };
+  return { rigGroup, pivot, hatGroup, backGroup, lArmPivot, rArmPivot, lLegPivot, rLegPivot };
+}
+
+/* ===== Live 3D Avatar Preview in Settings ===== */
+const prevCanvas = $('avatarPrevCanvas');
+const prevRenderer = new THREE.WebGLRenderer({ canvas: prevCanvas, antialias: true, alpha: true });
+prevRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+prevRenderer.setSize(200, 220, false);
+const prevScene = new THREE.Scene();
+const prevCam = new THREE.PerspectiveCamera(38, 200 / 220, 0.1, 20);
+prevCam.position.set(0, 1.05, 3.2);
+prevCam.lookAt(0, 0.98, 0);
+
+const prevFaceCv = document.createElement('canvas'); prevFaceCv.width = prevFaceCv.height = 128;
+const prevFaceTex = new THREE.CanvasTexture(prevFaceCv); prevFaceTex._keep = true;
+const prevShirtCv = document.createElement('canvas'); prevShirtCv.width = prevShirtCv.height = 128;
+const prevShirtTex = new THREE.CanvasTexture(prevShirtCv); prevShirtTex._keep = true;
+
+let prevRigObj = null;
+// Face of rig points along -Z, so rotate Y by Math.PI initially so player faces the camera
+let prevYaw = Math.PI + 0.35;
+let prevDragging = false, prevLastX = 0;
+
+function rebuildAvatarPreview() {
+  if (prevRigObj) {
+    prevScene.remove(prevRigObj.rigGroup);
+    disposeObj3D(prevRigObj.rigGroup);
+  }
+  drawFaceCanvas(prevFaceCv, myFace, myLook.head);
+  prevFaceTex.needsUpdate = true;
+  drawShirtCanvas(prevShirtCv, myLook.shirt, myLook.body);
+  prevShirtTex.needsUpdate = true;
+  prevRigObj = buildAvatarRig(myLook, prevFaceTex, prevShirtTex);
+  prevRigObj.rigGroup.rotation.y = prevYaw;
+  prevScene.add(prevRigObj.rigGroup);
+}
+
+prevCanvas.addEventListener('pointerdown', e => {
+  prevDragging = true;
+  prevLastX = e.clientX;
+  prevCanvas.setPointerCapture(e.pointerId);
+});
+prevCanvas.addEventListener('pointermove', e => {
+  if (!prevDragging) return;
+  const dx = e.clientX - prevLastX;
+  prevLastX = e.clientX;
+  prevYaw += dx * 0.015;
+  if (prevRigObj) prevRigObj.rigGroup.rotation.y = prevYaw;
+});
+prevCanvas.addEventListener('pointerup', e => {
+  prevDragging = false;
+  try { prevCanvas.releasePointerCapture(e.pointerId); } catch (err) {}
+});
+prevCanvas.addEventListener('pointercancel', () => { prevDragging = false; });
+
+function renderAvatarPreview(now) {
+  if ($('settings').hidden || $('tabAvatar').hidden || !prevRigObj) return;
+  const t = now * 0.0025;
+  prevRigObj.pivot.rotation.y = Math.sin(t * 0.7) * 0.14;
+  if (prevRigObj.lArmPivot && prevRigObj.rArmPivot && prevRigObj.lLegPivot && prevRigObj.rLegPivot) {
+    const swing = Math.sin(t * 1.4) * 0.32;
+    prevRigObj.lArmPivot.rotation.x = swing;
+    prevRigObj.rArmPivot.rotation.x = -swing;
+    prevRigObj.lLegPivot.rotation.x = -swing;
+    prevRigObj.rLegPivot.rotation.x = swing;
+  }
+  prevRenderer.render(prevScene, prevCam);
 }
 
 /* ===== Remote players ===== */
@@ -1479,25 +1812,33 @@ function addRemote(id, name, face, look) {
     lLeg: '#3d5a80',
     rLeg: '#3d5a80',
     acc: '#e0a96d',
-    hat: 'none'
+    hat: 'none',
+    back: 'none',
+    shirt: new Array(256).fill('')
   };
   const g = new THREE.Group();
   const cv = document.createElement('canvas'); cv.width = cv.height = 128;
   const tex = new THREE.CanvasTexture(cv);
   tex._keep = true;
 
-  const built = buildAvatarRig(lk, tex);
+  const scv = document.createElement('canvas'); scv.width = scv.height = 128;
+  const stex = new THREE.CanvasTexture(scv);
+  stex._keep = true;
+
+  const built = buildAvatarRig(lk, tex, stex);
   g.add(built.rigGroup, labelSprite(name));
   scene.add(g);
 
   remotes.set(id, {
-    name, g, ...built, cv, tex,
+    name, g, ...built, cv, tex, scv, stex,
     face: cleanFace(face || FACE_DEFAULT),
     look: lk,
     col: new THREE.Color(lk.body),
-    x: 0, y: -100, z: 0, yaw: 0, pitch: 0, walkTime: 0, init: false
+    x: 256.5, y: -100, z: 256.5, yaw: 0, pitch: 0, walkTime: 0, init: false
   });
   setRemoteFace(id, face);
+  drawShirtCanvas(scv, lk.shirt, lk.body);
+  stex.needsUpdate = true;
 }
 function setRemoteFace(id, face) {
   const r = remotes.get(id); if (!r) return;
@@ -1512,16 +1853,19 @@ function setRemoteLook(id, look) {
   r.col.set(lk.body);
   r.g.remove(r.rigGroup);
   disposeObj3D(r.rigGroup);
-  const built = buildAvatarRig(lk, r.tex);
+  const built = buildAvatarRig(lk, r.tex, r.stex);
   Object.assign(r, built);
   r.g.add(built.rigGroup);
   drawFaceCanvas(r.cv, r.face, lk.head);
   r.tex.needsUpdate = true;
+  drawShirtCanvas(r.scv, lk.shirt, lk.body);
+  r.stex.needsUpdate = true;
 }
 function removeRemote(id) {
   const r = remotes.get(id); if (!r) return;
   scene.remove(r.g);
   r.tex._keep = false;
+  r.stex._keep = false;
   disposeObj3D(r.g);
   remotes.delete(id);
 }
@@ -1538,7 +1882,6 @@ function updateRemotes(dt) {
     r.g.rotation.y += (r.yaw - r.g.rotation.y) * k;
     r.pivot.rotation.x += (r.pitch - r.pivot.rotation.x) * k;
 
-    // C6 limb swing animation
     if (r.lArmPivot && r.rArmPivot && r.lLegPivot && r.rLegPivot) {
       if (speed > 0.25) {
         r.walkTime += dt * Math.min(14, speed * 2.2);
@@ -1579,6 +1922,7 @@ function chatSys(text) { const d = document.createElement('div'); d.className = 
 function chatFade() { const now = performance.now(); for (const el of $('chatlog').children) el.classList.toggle('old', now - el.dataset.t > 9000); }
 
 /* ===== Networking & Public Servers ===== */
+const MAX_GUESTS = 49; // 50 total players including host
 const net = { peer: null, role: 'solo', code: null, conns: new Map(), host: null, name: 'Player', myId: null, isPublic: false };
 const cleanName = n => String(n || '').replace(/[^\w \-.]/g, '').trim().slice(0, 16) || 'Player';
 const toU8 = d => d instanceof ArrayBuffer ? new Uint8Array(d) : new Uint8Array(d.buffer, d.byteOffset, d.byteLength);
@@ -1672,8 +2016,13 @@ function applySet(m) {
 }
 async function sendSnapshot(conn) {
   const bytes = await serializeWorld(), S = 32768, parts = Math.ceil(bytes.length / S);
-  const players = [{ id: 'host', name: net.name, face: myFace, look: myLook }];
-  for (const [id, c] of net.conns) if (c.ready) players.push({ id, name: c.pname, face: c.face, look: c.look });
+  const players = [{ id: 'host', name: net.name, face: myFace, look: myLook, x: me.x, y: me.y, z: me.z, yaw: me.yaw, p: me.pitch }];
+  for (const [id, c] of net.conns) {
+    if (c.ready) {
+      const rem = remotes.get(id);
+      players.push({ id, name: c.pname, face: c.face, look: c.look, x: rem ? rem.x : 256.5, y: rem ? rem.y : 3, z: rem ? rem.z : 256.5, yaw: rem ? rem.yaw : 0, p: rem ? rem.pitch : 0 });
+    }
+  }
   conn.send({ t: 'welcome', id: conn.peer, wname: world.name, players, total: bytes.length, parts });
   for (let i = 0; i < parts; i++) {
     while (conn.dataChannel && conn.dataChannel.bufferedAmount > 1e6) await new Promise(r => setTimeout(r, 25));
@@ -1705,9 +2054,24 @@ function startLanServer(code, isPublic) {
   peer.on('connection', onGuest);
 }
 
+function kickGuest(peerId) {
+  if (net.role !== 'host') return;
+  const conn = net.conns.get(peerId);
+  if (!conn) return;
+  const kickedName = conn.pname || 'Player';
+  try { conn.send({ t: 'kicked' }); } catch (e) {}
+  net.conns.delete(peerId);
+  removeRemote(peerId);
+  hostBroadcast({ t: 'leave', id: peerId }, null);
+  chatSys(kickedName + ' was kicked');
+  toast('Kicked ' + kickedName);
+  setTimeout(() => { try { conn.close(); } catch (e) {} }, 250);
+  if (!$('pause').hidden) renderPause();
+}
+
 function onGuest(conn) {
-  if (net.conns.size >= 7) { conn.on('open', () => { conn.send({ t: 'full' }); setTimeout(() => conn.close(), 400); }); return; }
-  conn.pending = []; conn.ready = false; conn.pname = 'Player'; conn.face = FACE_DEFAULT; conn.look = { ...LOOK_DEFAULT }; conn.lastChat = 0;
+  if (net.conns.size >= MAX_GUESTS) { conn.on('open', () => { conn.send({ t: 'full' }); setTimeout(() => conn.close(), 400); }); return; }
+  conn.pending = []; conn.ready = false; conn.pname = 'Player'; conn.face = FACE_DEFAULT; conn.look = { ...LOOK_DEFAULT, shirt: new Array(256).fill('') }; conn.lastChat = 0;
   net.conns.set(conn.peer, conn);
   conn.on('data', m => {
     if (!m || typeof m !== 'object') return;
@@ -1775,7 +2139,7 @@ function joinGame(code, name) {
     conn.on('close', () => { if (state.inGame) endSession(HOST_CLOSED); else fail('The host closed the connection.'); });
     conn.on('data', async m => {
       if (!m || typeof m !== 'object') return;
-      if (m.t === 'full') { fail('That world is full.'); return; }
+      if (m.t === 'full') { fail('That world is full (50/50 players).'); return; }
       if (m.t === 'welcome') {
         snap = { parts: new Array(m.parts), got: 0, total: m.total, players: m.players, wname: m.wname }; net.myId = m.id;
         $('loadT').textContent = 'Downloading world';
@@ -1788,7 +2152,10 @@ function joinGame(code, name) {
           try { await loadWorldBytes(all); } catch (e) { fail('Could not read the world: ' + e.message); return; }
           finished = true; clearTimeout(timer); net.role = 'guest';
           startGame();
-          for (const p of snap.players) addRemote(p.id, p.name, p.face, p.look);
+          for (const p of snap.players) {
+            addRemote(p.id, p.name, p.face, p.look);
+            if (Number.isFinite(p.x)) setRemotePos(p.id, p);
+          }
           conn.send({ t: 'ready' });
           snap = null;
         }
@@ -1800,6 +2167,7 @@ function joinGame(code, name) {
         else if (m.t === 'face') setRemoteFace(m.id, m);
         else if (m.t === 'look') setRemoteLook(m.id, m);
         else if (m.t === 'chat') chatAdd(m.id, String(m.name || '?').slice(0, 16), String(m.text || '').slice(0, 200));
+        else if (m.t === 'kicked') endSession('You were kicked from the server by the host. You still have a copy you can download.');
         else if (m.t === 'bye') endSession(HOST_CLOSED);
       }
     });
@@ -1807,7 +2175,7 @@ function joinGame(code, name) {
 }
 
 /* ===== Screens ===== */
-const SCREENS = ['home', 'play', 'join', 'settings', 'pause', 'lanModal', 'loading', 'closed'];
+const SCREENS = ['home', 'play', 'join', 'settings', 'pause', 'tpModal', 'lanModal', 'loading', 'closed'];
 const HOST_CLOSED = 'The host closed the world. You still have a copy you can download.';
 function show(id) { for (const s of SCREENS) $(s).hidden = s !== id; }
 function setMsg(id, t, err) { const e = $(id); e.textContent = t || ''; e.className = 'msg' + (err ? ' err' : ''); }
@@ -1876,19 +2244,46 @@ $('chatin').addEventListener('keydown', e => {
   e.stopPropagation();
 });
 
-/* pause menu */
+/* pause menu, host kick list & teleport modal */
 function renderPause() {
   $('wname').textContent = world.name;
   const lb = $('lanBlock'); lb.textContent = '';
   if (net.role === 'host') {
     const cb = document.createElement('div'); cb.className = 'codebox'; cb.textContent = net.code;
-    const hint = document.createElement('div'); hint.className = 'msg'; hint.textContent = (net.isPublic ? 'Public server · ' : 'Private · ') + net.conns.size + ' connected.';
+    const hint = document.createElement('div'); hint.className = 'msg'; hint.textContent = (net.isPublic ? 'Public server · ' : 'Private · ') + (net.conns.size + 1) + '/50 players.';
     const cp = document.createElement('button'); cp.textContent = 'Copy code';
     cp.onclick = () => { (navigator.clipboard ? navigator.clipboard.writeText(net.code) : Promise.reject()).then(() => toast('Code copied')).catch(() => { const r = document.createRange(); r.selectNodeContents(cb); getSelection().removeAllRanges(); getSelection().addRange(r); }); };
     lb.style.cssText = 'display:flex;flex-direction:column;gap:10px'; lb.append(cb, hint, cp);
   } else if (net.role === 'guest') {
     lb.style.cssText = ''; const h = document.createElement('div'); h.className = 'msg'; h.textContent = 'Playing on someone else\'s world.'; lb.append(h);
   } else lb.style.cssText = '';
+
+  // Host kick player management list
+  const hostWrap = $('hostPlayersWrap');
+  const hostList = $('hostPlayersList');
+  if (net.role === 'host' && net.conns.size > 0) {
+    hostWrap.hidden = false;
+    $('connCount').textContent = net.conns.size;
+    hostList.textContent = '';
+    for (const [id, cn] of net.conns) {
+      const row = document.createElement('div');
+      row.className = 'list-item';
+      const label = document.createElement('span');
+      label.textContent = cn.pname || 'Player';
+      const kickBtn = document.createElement('button');
+      kickBtn.className = 'xs danger';
+      kickBtn.textContent = 'Kick';
+      kickBtn.onclick = () => kickGuest(id);
+      row.append(label, kickBtn);
+      hostList.appendChild(row);
+    }
+  } else {
+    hostWrap.hidden = true;
+  }
+
+  // Teleport button visible whenever other players are in the world
+  $('bTeleportMenu').hidden = remotes.size === 0;
+
   $('bLan').hidden = net.role !== 'solo';
   $('bLan').disabled = false; $('bLan').textContent = 'Open to LAN';
 }
@@ -1896,6 +2291,43 @@ function openPause() { state.ui = 'pause'; renderPause(); show('pause'); }
 function resume() { show('none'); state.ui = 'game'; lock(); }
 function openPalette() { state.ui = 'palette'; if (document.pointerLockElement) document.exitPointerLock(); $('palette').hidden = false; renderUsed(); palDirty = false; }
 function closePalette(relock) { $('palette').hidden = true; state.ui = 'game'; if (relock) lock(); }
+
+function openTeleportModal() {
+  const list = $('tpList');
+  list.textContent = '';
+  if (remotes.size === 0) {
+    list.innerHTML = '<div style="padding:10px;text-align:center;color:var(--dim)">No other players connected</div>';
+  } else {
+    for (const [id, r] of remotes) {
+      const row = document.createElement('div');
+      row.className = 'list-item';
+      const info = document.createElement('span');
+      const coords = Number.isFinite(r.x) && r.y > -90 ? ` (${Math.floor(r.x)}, ${Math.floor(r.y)}, ${Math.floor(r.z)})` : '';
+      info.innerHTML = `<b>${r.name}</b><small style="color:var(--dim)">${coords}</small>`;
+      const tpBtn = document.createElement('button');
+      tpBtn.className = 'xs primary';
+      tpBtn.textContent = 'TP';
+      tpBtn.onclick = () => {
+        if (!Number.isFinite(r.x) || r.y <= -90) {
+          toast('Waiting for player coordinates');
+          return;
+        }
+        me.x = r.x;
+        me.y = r.y;
+        me.z = r.z;
+        me.vx = me.vy = me.vz = 0;
+        netPos();
+        toast('Teleported to ' + r.name);
+        resume();
+      };
+      row.append(info, tpBtn);
+      list.appendChild(row);
+    }
+  }
+  show('tpModal');
+}
+$('bTeleportMenu').onclick = openTeleportModal;
+$('bTpBack').onclick = () => { renderPause(); show('pause'); };
 
 async function downloadWorld() {
   const bytes = await serializeWorld();
@@ -1914,7 +2346,7 @@ try { const n = localStorage.getItem('chroma.name'); if (n) $('nameP').value = $
 $('bPlay').onclick = () => { setMsg('playMsg', ''); show('play'); $('nameP').focus(); };
 $('bJoin').onclick = () => { setMsg('joinMsg', ''); renderPublicList(); show('join'); ($('nameJ').value ? $('codeJ') : $('nameJ')).focus(); };
 $('bRefreshPub').onclick = renderPublicList;
-$('bSettings').onclick = () => { settingsBack = 'home'; show('settings'); };
+$('bSettings').onclick = () => { settingsBack = 'home'; show('settings'); rebuildAvatarPreview(); };
 $('bPlayBack').onclick = $('bJoinBack').onclick = () => show('home');
 
 document.querySelectorAll('#presets button').forEach(b => b.onclick = () => {
@@ -1967,12 +2399,21 @@ $('bStartLan').onclick = () => {
 ['nameJ', 'codeJ'].forEach(id => $(id).addEventListener('keydown', e => { if (e.key === 'Enter') $('bDoJoin').click(); }));
 $('bResume').onclick = resume;
 $('bDownload').onclick = downloadWorld;
-$('bPauseSet').onclick = () => { settingsBack = 'pause'; show('settings'); };
+$('bPauseSet').onclick = () => { settingsBack = 'pause'; show('settings'); rebuildAvatarPreview(); };
 $('bLeave').onclick = () => endSession(net.role === 'guest' ? 'You left the world. You still have a copy you can download.' : 'You can download the world before you go. Worlds are not saved anywhere else.');
 $('bClosedDl').onclick = downloadWorld;
 $('bClosedBack').onclick = backToMenu;
 
-/* Settings UI toggles */
+/* Settings Tabs */
+function setSettingsTab(tab) {
+  document.querySelectorAll('#settingsTabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
+  $('tabGeneral').hidden = tab !== 'general';
+  $('tabAvatar').hidden = tab !== 'avatar';
+  if (tab === 'avatar') rebuildAvatarPreview();
+}
+document.querySelectorAll('#settingsTabs button').forEach(b => b.onclick = () => setSettingsTab(b.dataset.tab));
+
+/* General Settings UI toggles */
 function syncSmoothUI() {
   document.querySelectorAll('#smoothSel button').forEach(b => b.classList.toggle('on', (+b.dataset.sm === 1) === settings.smooth));
 }
@@ -1981,6 +2422,16 @@ document.querySelectorAll('#smoothSel button').forEach(b => b.onclick = () => {
   saveSettings(); syncSmoothUI(); remeshAllVisible();
 });
 syncSmoothUI();
+
+function syncCloudsUI() {
+  document.querySelectorAll('#cloudsSel button').forEach(b => b.classList.toggle('on', (+b.dataset.cl === 1) === settings.clouds));
+  if (cloudGroup) cloudGroup.visible = settings.clouds;
+}
+document.querySelectorAll('#cloudsSel button').forEach(b => b.onclick = () => {
+  settings.clouds = +b.dataset.cl === 1;
+  saveSettings(); syncCloudsUI();
+});
+syncCloudsUI();
 
 function syncPerfUI() {
   document.querySelectorAll('#perfSel button').forEach(b => b.classList.toggle('on', (+b.dataset.pf === 1) === settings.perf));
@@ -1992,23 +2443,109 @@ document.querySelectorAll('#perfSel button').forEach(b => b.onclick = () => {
 });
 syncPerfUI();
 
-/* 16x16 face pixel grid setup */
+/* ===== 16x16 Face Pixel Grid (Black, White, Erase + Drag-to-Draw) ===== */
+let facePenTool = 1; // 1 = black, 2 = white, 0 = erase
+let isDrawingFace = false;
 const gridEl = $('drawGrid');
+
+function paintFacePixel(i) {
+  if (myFace.pixels[i] === facePenTool) return;
+  myFace.pixels[i] = facePenTool;
+  const pix = gridEl.children[i];
+  pix.style.background = facePenTool === 1 ? '#14161a' : (facePenTool === 2 ? '#ffffff' : '');
+  commitFace();
+}
+
 for (let i = 0; i < 256; i++) {
   const pix = document.createElement('div');
   pix.className = 'pix';
   pix.dataset.i = i;
-  pix.onmousedown = (e) => {
-    myFace.pixels[i] = myFace.pixels[i] ? 0 : 1;
-    pix.style.background = myFace.pixels[i] ? '#14161a' : '';
-    commitFace();
-  };
+  pix.addEventListener('pointerdown', e => {
+    e.preventDefault();
+    isDrawingFace = true;
+    paintFacePixel(i);
+  });
+  pix.addEventListener('pointerenter', () => {
+    if (isDrawingFace) paintFacePixel(i);
+  });
   gridEl.appendChild(pix);
 }
+gridEl.addEventListener('pointermove', e => {
+  if (!isDrawingFace) return;
+  const el = document.elementFromPoint(e.clientX, e.clientY);
+  if (el && el.parentElement === gridEl && el.dataset.i !== undefined) {
+    paintFacePixel(+el.dataset.i);
+  }
+});
+addEventListener('pointerup', () => { isDrawingFace = false; isDrawingShirt = false; });
+addEventListener('pointercancel', () => { isDrawingFace = false; isDrawingShirt = false; });
+
+document.querySelectorAll('[data-fpen]').forEach(btn => {
+  btn.onclick = () => {
+    facePenTool = +btn.dataset.fpen;
+    document.querySelectorAll('[data-fpen]').forEach(b => b.classList.toggle('on', b === btn));
+  };
+});
 $('clearPix').onclick = () => {
   myFace.pixels.fill(0);
   for (const child of gridEl.children) child.style.background = '';
   commitFace();
+};
+
+/* ===== 16x16 Color T-Shirt Pixel Grid (Color Picker, Swatches, Erase + Drag-to-Draw) ===== */
+let shirtPenColor = '#ffffff';
+let shirtEraseMode = false;
+let isDrawingShirt = false;
+const shirtGridEl = $('shirtGrid');
+
+function paintShirtPixel(i) {
+  const val = shirtEraseMode ? '' : shirtPenColor;
+  if (myLook.shirt[i] === val) return;
+  myLook.shirt[i] = val;
+  shirtGridEl.children[i].style.background = val;
+  commitLook();
+}
+
+for (let i = 0; i < 256; i++) {
+  const pix = document.createElement('div');
+  pix.className = 'pix';
+  pix.dataset.i = i;
+  pix.addEventListener('pointerdown', e => {
+    e.preventDefault();
+    isDrawingShirt = true;
+    paintShirtPixel(i);
+  });
+  pix.addEventListener('pointerenter', () => {
+    if (isDrawingShirt) paintShirtPixel(i);
+  });
+  shirtGridEl.appendChild(pix);
+}
+shirtGridEl.addEventListener('pointermove', e => {
+  if (!isDrawingShirt) return;
+  const el = document.elementFromPoint(e.clientX, e.clientY);
+  if (el && el.parentElement === shirtGridEl && el.dataset.i !== undefined) {
+    paintShirtPixel(+el.dataset.i);
+  }
+});
+
+function setShirtToolColor(hex) {
+  shirtEraseMode = false;
+  shirtPenColor = hex.toLowerCase();
+  $('shirtColPick').value = shirtPenColor;
+  $('shirtEraseBtn').classList.remove('on');
+  document.querySelectorAll('.swatch-btn').forEach(b => b.classList.toggle('on', b.dataset.sc === shirtPenColor));
+}
+$('shirtColPick').addEventListener('input', e => setShirtToolColor(e.target.value));
+document.querySelectorAll('.swatch-btn').forEach(b => b.onclick = () => setShirtToolColor(b.dataset.sc));
+$('shirtEraseBtn').onclick = () => {
+  shirtEraseMode = true;
+  $('shirtEraseBtn').classList.add('on');
+  document.querySelectorAll('.swatch-btn').forEach(b => b.classList.remove('on'));
+};
+$('shirtClearBtn').onclick = () => {
+  myLook.shirt.fill('');
+  for (const child of shirtGridEl.children) child.style.background = '';
+  commitLook();
 };
 
 function syncLookUI() {
@@ -2023,7 +2560,12 @@ function syncLookUI() {
   $('rLegCol').value = myLook.rLeg;
   $('accCol').value = myLook.acc;
   document.querySelectorAll('#hatSel button').forEach(b => b.classList.toggle('on', b.dataset.h === myLook.hat));
+  document.querySelectorAll('#backSel button').forEach(b => b.classList.toggle('on', b.dataset.b === myLook.back));
+  for (let i = 0; i < 256; i++) {
+    shirtGridEl.children[i].style.background = myLook.shirt[i] || '';
+  }
   drawFaceCanvas($('facePrev'), myFace, myLook.head);
+  rebuildAvatarPreview();
 }
 function commitLook() {
   try { localStorage.setItem('chroma.look', JSON.stringify(myLook)); } catch (e) {}
@@ -2038,8 +2580,9 @@ $('rArmCol').addEventListener('input', e => { myLook = cleanLook({ ...myLook, rA
 $('lLegCol').addEventListener('input', e => { myLook = cleanLook({ ...myLook, lLeg: e.target.value }); commitLook(); });
 $('rLegCol').addEventListener('input', e => { myLook = cleanLook({ ...myLook, rLeg: e.target.value }); commitLook(); });
 $('accCol').addEventListener('input', e => { myLook = cleanLook({ ...myLook, acc: e.target.value }); commitLook(); });
-$('bResetLook').onclick = () => { myLook = { ...LOOK_DEFAULT, rig: myLook.rig }; commitLook(); };
+$('bResetLook').onclick = () => { myLook = { ...LOOK_DEFAULT, rig: myLook.rig, shirt: [...myLook.shirt] }; commitLook(); };
 document.querySelectorAll('#hatSel button').forEach(b => b.onclick = () => { myLook = cleanLook({ ...myLook, hat: b.dataset.h }); commitLook(); });
+document.querySelectorAll('#backSel button').forEach(b => b.onclick = () => { myLook = cleanLook({ ...myLook, back: b.dataset.b }); commitLook(); });
 
 function syncFaceUI() {
   $('faceT').value = myFace.text;
@@ -2047,12 +2590,14 @@ function syncFaceUI() {
   $('faceTextWrap').hidden = myFace.mode !== 'text';
   $('faceDrawWrap').hidden = myFace.mode !== 'draw';
   document.querySelectorAll('#faceRot button').forEach(b => b.classList.toggle('on', +b.dataset.r === myFace.rot));
-  
+
   const children = gridEl.children;
   for (let i = 0; i < 256; i++) {
-    children[i].style.background = myFace.pixels[i] ? '#14161a' : '';
+    const p = myFace.pixels[i];
+    children[i].style.background = p === 1 ? '#14161a' : (p === 2 ? '#ffffff' : '');
   }
   drawFaceCanvas($('facePrev'), myFace, myLook.head);
+  rebuildAvatarPreview();
 }
 function commitFace() { try { localStorage.setItem('chroma.face', JSON.stringify(myFace)); } catch (e) {} syncFaceUI(); netFace(); }
 
@@ -2083,7 +2628,7 @@ addEventListener('keydown', e => {
   if ((e.code === 'KeyT' || e.code === 'Enter') && state.ui === 'game') { openChat(); e.preventDefault(); return; }
   if (e.code === 'KeyE' && !e.repeat) { if (state.ui === 'game') openPalette(); else if (state.ui === 'palette') closePalette(true); e.preventDefault(); }
   else if (e.code === 'Escape' && state.ui === 'palette') closePalette(true);
-  else if (e.code === 'Escape' && state.ui === 'pause' && $('settings').hidden) resume();
+  else if (e.code === 'Escape' && state.ui === 'pause' && $('settings').hidden && $('tpModal').hidden) resume();
   if (e.code === 'Space') {
     if (!e.repeat && state.ui === 'game') { const t = performance.now(); if (t - lastSpace < 300) { me.fly = !me.fly; me.vy = 0; } lastSpace = t; }
     e.preventDefault();
@@ -2119,7 +2664,7 @@ canvas.addEventListener('wheel', e => {
 let lastT = performance.now(), hudT = 0, frameCount = 0, fpsTimer = 0, currentFps = 60;
 function hud() {
   $('hcoord').textContent = Math.floor(me.x) + '  ' + Math.floor(me.y) + '  ' + Math.floor(me.z) + (me.fly ? '  · fly' : '');
-  const lan = $('hlan'); lan.hidden = net.role !== 'host'; if (net.role === 'host') lan.textContent = 'LAN · ' + net.code;
+  const lan = $('hlan'); lan.hidden = net.role !== 'host'; if (net.role === 'host') lan.textContent = 'LAN · ' + net.code + ' (' + (net.conns.size + 1) + '/50)';
   const pl = $('hplayers'), multi = remotes.size > 0;
   pl.hidden = !multi;
   if (multi) {
@@ -2139,12 +2684,14 @@ function frame(now) {
     frameCount = 0; fpsTimer = 0;
     if (settings.perf) $('hperf').textContent = 'FPS: ' + currentFps;
   }
+  renderAvatarPreview(now);
   if (!state.inGame) return;
   stepPlayer(dt);
   camera.position.set(me.x, me.y + 1.62, me.z); camera.rotation.set(me.pitch, me.yaw, 0);
   updateTarget(); interact(dt);
   updateChunks(me.x, me.z, 3.5);
   updateRemotes(dt);
+  updateClouds(dt);
   hudT += dt;
   if (hudT > 0.1) {
     hudT = 0; hud(); netPos(); chatFade();
